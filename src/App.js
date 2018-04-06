@@ -89,6 +89,7 @@ class App extends Component {
 
   async componentDidMount() {
     await this.updatePrice();
+
     setInterval(async () => {
       await this.updatePrice();
     }, 4000);
@@ -97,9 +98,10 @@ class App extends Component {
   async updatePrice() {
     const priceData = await getBitcoinPrice();
     const price = priceData.price;
+    
     this.setState({
       price: price,
-    });
+    }); 
   }
 
   handleBaseAmountValueChange = (e) => {
@@ -111,14 +113,14 @@ class App extends Component {
 
   render() {
     const calculatedQuotePrice = calculateQuoteFromBase(this.state.price, this.state.baseAmountValue);
-
+    
     return (
       <AppContainer>
         <Header>Simple Bitcoin Calculator</Header>
         <CalculatorContainer>
           <Row>
             <RowLabel>BTC</RowLabel>
-            <RowInput
+            <RowInput 
               value={this.state.baseAmountValue}
               onChange={this.handleBaseAmountValueChange}
             />
