@@ -4,6 +4,15 @@ import logo from "./logo.svg";
 import "./App.css";
 import { colors, spacing, fontSizing } from "./theme";
 
+const BASE_ENDPOINT = 'https://api.gdax.com';
+const getBitcoinPrice = async (pair = 'btc-usd') => {
+  const fullEndpoint = `${BASE_ENDPOINT}/products/${pair}/ticker`;
+  console.log(fullEndpoint);
+  const bitcoinPriceRaw = await fetch(fullEndpoint);
+  const bitcoinPriceJson = await bitcoinPriceRaw.json();
+  return bitcoinPriceJson;
+}
+
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
