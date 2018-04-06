@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { BigNumber } from 'bignumber.js';
 import logo from "./logo.svg";
 import "./App.css";
 import { colors, spacing, fontSizing } from "./theme";
@@ -78,18 +79,53 @@ const Button = styled.button`
 `;
 
 class App extends Component {
+  constructor() {
+    super(); // react-ism
+    this.state = {
+      price: null,
+      baseAmountValue: 2,
+    };
+  }
+
+  async componentDidMount() {
+    await this.updatePrice();
+    setInterval(async () => {
+      await this.updatePrice();
+    }, 4000);
+  }
+
+  async updatePrice() {
+    const priceData = await getBitcoinPrice();
+    const price = priceData.price;
+    this.setState({
+      price: price,
+    });
+  }
+
+  handleBaseAmountValueChange = (e) => {
+    const value = e.target.value;
+    this.setState({
+      baseAmountValue: value,
+    });
+  }
+
   render() {
+    const calculatedQuotePrice = calculateQuoteFromBase(this.state.price, this.state.baseAmountValue);
+
     return (
       <AppContainer>
         <Header>Simple Bitcoin Calculator</Header>
         <CalculatorContainer>
           <Row>
             <RowLabel>BTC</RowLabel>
-            <RowInput />
+            <RowInput
+              value={this.state.baseAmountValue}
+              onChange={this.handleBaseAmountValueChange}
+            />
           </Row>
           <Row>
             <RowLabel>USD</RowLabel>
-            <RowInput />
+            <RowInput value={calculatedQuotePrice} />
           </Row>
         </CalculatorContainer>
         <Button>Buy Bitcoin</Button>
@@ -97,5 +133,12 @@ class App extends Component {
     );
   }
 }
+
+const calculateQuoteFromBase = (quotePrice, baseQuantity) => {
+  const quotePriceNumber = new BigNumber(+quotePrice);
+  const baseQuantityNumber = new BigNumber(+baseQuantity);
+  const actualQuotePrice = quotePriceNumber.multipliedBy(baseQuantityNumber);
+  return actualQuotePrice.toFormat(2);
+};
 
 export default App;
