@@ -23,7 +23,8 @@ const CalculatorContainer = styled.div`
   width: 42rem;
   box-shadow: ${colors.boxShadow};
   border-radius: 8px;
-  
+  overflow: hidden;
+  margin-bottom: ${spacing.xlarge};
 `;
 
 const Row = styled.div`
@@ -36,12 +37,36 @@ const Row = styled.div`
 const RowLabel = styled.div`
   min-width: 12rem;
   font-size: ${fontSizing.large};
+  color: ${colors.primaryTextColor};
   background-color: ${colors.labelBackgroundColor};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
+const RowInput = styled.input`
+  width: 100%;
+  font-size: ${fontSizing.xlarge};
+  padding-left: ${spacing.medium};
+  font-family: 'Lato';
+  color: ${colors.primaryTextColor};
+  :focus {
+    outline: none;
+  }
+`;
+
+const Button = styled.button`
+  width: 42rem;
+  height: 8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: ${fontSizing.medium};
+  text-transform: uppercase;
+  font-family: 'Lato';
+  color: ${colors.contrastTextColor};
+  box-shadow: ${colors.boxShadow};
+  background: ${colors.buttonBackgroundColor};
+`;
 
 class App extends Component {
   render() {
@@ -51,11 +76,14 @@ class App extends Component {
         <CalculatorContainer>
           <Row>
             <RowLabel>BTC</RowLabel>
+            <RowInput />
           </Row>
           <Row>
             <RowLabel>USD</RowLabel>
+            <RowInput />
           </Row>
         </CalculatorContainer>
+        <Button>Buy Bitcoin</Button>
       </AppContainer>
     );
   }
